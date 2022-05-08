@@ -16,15 +16,11 @@ myEntry = tk.Entry(window, textvariable=inp) #文字輸入框
 myEntry.grid(row=0, column=1)
 
 #button觸發
-def button_test():
-    print("HI")
-    mylabel.config(text='2')
-
 def button_event():
     if inp.get() == '':
-        tk.messagebox.showerror('message', '未輸入答案')
+        tk.messagebox.showerror('message', '未輸入答案') #showerror 提醒訊息
     elif inp.get() == '2':
-        tk.messagebox.showerror('message', '正確')
+        tk.messagebox.showinfo('message', '正確') #showinfo 提醒訊息
     else:
         tk.messagebox.showerror('message', '答錯')
 
