@@ -1,3 +1,4 @@
+import site
 import requests  #用於get請求
 from bs4 import BeautifulSoup as bs #網頁分析
 from os import mkdir #建資料夾(目錄)
@@ -20,40 +21,42 @@ headers={ #要改動項目2
 }  
 
 
-def get_novel(url):
-    novel_id = '/n1571cz/' #小說連結編號 #要改動項目3
-    url_novel = url + novel_id #小說目錄連結
+# def get_novel(url):
+#     novel_id = '/n1571cz/' #小說連結編號 #要改動項目3
+#     url_novel = url + novel_id #小說目錄連結
 
-    req = requests.get(url_novel, headers = headers)
-    soup = bs(req.text, "html.parser")
-    # print(soup)
-    if req.status_code != 200:
-        print("連接失敗")
+#     req = requests.get(url_novel, headers = headers)
+#     soup = bs(req.text, "html.parser")
+#     # print(soup)
+#     if req.status_code != 200:
+#         print("連接失敗")
     
-    novel_list = soup.select('dl.novel_sublist2 > dd.subtitle > a') #章節連結
-    a = 1 #檔案開頭編號
-    novel_title = soup.select('p.novel_title') #小說標題
-    novel_writerName = soup.select('div.novel_writername > a') #作者名
-    dirName = novel_title[0].text #資料夾名
-    mkdir(dirName)#於工作區內建新資料夾
+#     novel_list = soup.select('dl.novel_sublist2 > dd.subtitle > a') #章節連結
+#     a = 1 #檔案開頭編號
+#     novel_title = soup.select('p.novel_title') #小說標題
+#     novel_writerName = soup.select('div.novel_writername > a') #作者名
+#     dirName = novel_title[0].text #資料夾名
+#     mkdir(dirName)#於工作區內建新資料夾
     
-    for nl in novel_list:
-        url_href = url + nl['href'] #章節連結
-        r2 = requests.get(url_href, headers = headers)
-        r2.encoding = r2.apparent_encoding #轉碼
-        soup2 = bs(r2.text , "html.parser").select('div#novel_honbun') #小說內文
-        a_str = nl.text + '[作者：' + novel_writerName[0].text + ']' + '.txt' #小說檔名
+#     for nl in novel_list:
+#         url_href = url + nl['href'] #章節連結
+#         r2 = requests.get(url_href, headers = headers)
+#         r2.encoding = r2.apparent_encoding #轉碼
+#         soup2 = bs(r2.text , "html.parser").select('div#novel_honbun') #小說內文
+#         a_str = nl.text + '[作者：' + novel_writerName[0].text + ']' + '.txt' #小說檔名
 
-        with open(dirName + '/' + a_str, 'a', encoding="utf-8") as txt:
-            txt.write(nl.text + '\n\n\n') #寫入開頭標題
-            for s in soup2:
-                sr = s.text.replace('<br/>', '\n') #把小說內文的<br/>換掉
-                txt.write(sr + '\n')
-        txt.close
-        a = a + 1
+#         with open(dirName + '/' + a_str, 'a', encoding="utf-8") as txt:
+#             txt.write(nl.text + '\n\n\n') #寫入開頭標題
+#             for s in soup2:
+#                 sr = s.text.replace('<br/>', '\n') #把小說內文的<br/>換掉
+#                 txt.write(sr + '\n')
+#         txt.close
+#         a = a + 1
 
 # get_novel(url)
 # print("OVER!!")
+
+intput_website ='' #輸入網址
 
 def new_window():
     window = tk.Tk()
@@ -63,24 +66,26 @@ def new_window():
 
     #元件類別(父類別, 選擇性參數1 = 值1, ...) ，建立元件
     #元件.grid(row=列數, column=行數) ，設定(相對)位置
-    mylabel = tk.Label(window, text='1+1 = ')
+    mylabel = tk.Label(window, text='請輸入網址：')
     mylabel.grid(row=0, column=0)
 
-    inp = tk.StringVar() #輸入的字
-    myEntry = tk.Entry(window, textvariable=inp) #文字輸入框
+    intput_website = tk.StringVar() #輸入的字
+    myEntry = tk.Entry(window, textvariable=intput_website, width=40) #文字輸入框
     myEntry.grid(row=0, column=1)
 
     #button觸發
     def button_event():
-        if inp.get() == '':
+        if intput_website.get() == '':
             tk.messagebox.showerror('message', '未輸入答案') #showerror 提醒訊息
-        elif inp.get() == '2':
-            tk.messagebox.showinfo('message', '正確') #showinfo 提醒訊息
-        else:
-            tk.messagebox.showerror('message', '答錯')
 
     myButton = tk.Button(window, text='計算', command= button_event)
-    myButton.grid(row=0, column=2)
+    myButton.grid(row=1, column=0, rowspan=2)
 
-if __name__ == '__main__':
+
+
+    #inp1 = tk.Entry(window, text="Hello World", bg="yellow", fg="#263238", font=('Arial', 20))，進一步元件風格
+
+    window.mainloop()
+
+if __name__=='__main__':
     new_window()

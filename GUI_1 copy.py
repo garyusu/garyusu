@@ -1,5 +1,8 @@
 import tkinter as tk
 from tkinter import messagebox
+import requests  #用於get請求
+from bs4 import BeautifulSoup as bs #網頁分析
+from os import mkdir #建資料夾(目錄)
 
 def new_window():
         
